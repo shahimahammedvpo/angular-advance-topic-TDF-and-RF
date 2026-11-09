@@ -1,0 +1,83 @@
+<h2>signup Form</h2>
+
+<form #signupForm="ngForm" (ngSubmit)="submitForm(signupForm)">
+<label >full name:</label>
+<input type="text"
+name="name"
+required
+minlength="4"
+pattern="[a-zA-Z ]+"
+[(ngModel)]="user.name"
+#name="ngModel"
+>
+<ng-container>
+@if (name.invalid && (name.touched ||name.dirty)) {
+    <small>
+    @if (name.errors?.['required']) {
+        <p>name is required</p>
+    }
+    @else if (name.errors?.['minlength']) {
+        <p>minimum 4 characters</p>
+    }
+    @else if (name.errors?.['pattern']) {
+        <p>only letters and spaces allowed</p>
+    }
+    </small>
+}
+</ng-container>
+<br><br>
+
+<label >email:</label>
+
+<input type="email"
+ name="email"
+ required
+ [(ngModel)]="user.email"
+ email
+ #email="ngModel"
+ >
+ <ng-content>
+ @if (email.invalid && (email.touched || email.dirty)) {
+<small>
+    @if (email.errors?.['required']) {
+        <p>email required</p>
+    }
+    @else if (email.errors?.['email']) {
+        <p>enter a valid email address</p>
+    }
+</small>
+ }
+</ng-content>
+
+<label >password:</label>
+<input type="password"
+required
+name="password"
+[(ngModel)]="user.password"
+#password="ngModel"
+minlength="8">
+<ng-content>
+@if (password.invalid && (password.touched || password.dirty)) {
+    <small>
+        @if (password.errors?.['minlength']) {
+            <p>minimum 8 characters</p>
+        }
+        @else if (password.errors?.['required']) {
+            <p>password required</p>
+        }
+        
+    </small>
+}
+</ng-content>
+
+<button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">signup</button>
+
+</form>
+
+<p>name: {{user.name}}</p>
+
+@if (submitData) {
+    <p>Name: <strong>{{submitData.name}}</strong></p>
+    <p>Email: <strong>{{submitData.email}}</strong></p>
+    <p>Password: <strong>{{submitData.password}}</strong></p>
+}
